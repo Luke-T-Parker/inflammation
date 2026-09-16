@@ -105,10 +105,24 @@ def test_daily_min_string():
         [[0.33, 0.67, 1], [0.67, 0.83, 1], [0.78, 0.89, 1]],
         None,
     ),
+    (
+        'hello',
+        None,
+        TypeError,
+    ),
+    (
+        3,
+        None,
+        TypeError,
+    ),
+
 ])
 def test_patient_normalise(test, expected, expect_raises):
     """Test normalisation works for arrays of one and positive integers."""
     from inflammation.models import patient_normalise
+
+    if isinstance(test, list):
+        test = np.array(test)
     if expect_raises is not None:
         with pytest.raises(expect_raises):
             npt.assert_almost_equal(patient_normalise(np.array(test)), np.array(expected), decimal=2)
